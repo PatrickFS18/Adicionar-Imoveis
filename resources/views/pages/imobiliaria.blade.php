@@ -27,24 +27,17 @@
             margin-bottom: 30px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .table {
+            background-color: #222;
+            color: #fff;
+            border-radius: 5px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
+        .table th,
+        .table td {
             padding: 10px;
-            font-size: 16px;
+            border-bottom: 1px solid #444;
         }
-
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -55,95 +48,97 @@
             color: #fff;
             border: none;
             cursor: pointer;
+         
         }
-
-        .card {
-            background-color: #222;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card p {
-            margin-bottom: 10px;
-        }
-
-        .card .btn {
-            background-color: #dc3545;
-        }
+       
 
         .footer {
             text-align: center;
             padding: 10px;
             background-color: #222;
             color: #fff;
-            margin-top:2em;
-        }
-
-        .filter-group {
-            margin-top: 20px;
+            margin-top: 2em;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Imobiliárias</h1>
+        <h1>Adicionar Imóvel</h1>
         @if(isset($errorMessage))
-    <h3><div class="alert alert-danger" style="margin: 10px;">
-        {{ $errorMessage }}
-    </div>
-    </h3>
-@endif
-        <form id="imobiliaria-form" class="form" method="POST" action="{{ route('casas.insert') }}">
-    @csrf
+        <h3>
+            <div class="alert alert-danger" style="margin: 10px;">
+                {{ $errorMessage }}
+            </div>
+        </h3>
+        @endif
 
-    <div class="form-group">
-        <label for="imobiliaria-name">Nome da Casa</label>
-        <input type="text" id="imobiliaria-name" name="nome" required>
-    </div>
+        <form id="imobiliaria-form" class="form" method="POST" action="{{ route('casas.insert') }}" style="margin-bottom: 2em;">
+            @csrf
 
-    <div class="form-group">
-        <label for="imobiliaria-price">Preço da Casa</label>
-        <input type="text" id="imobiliaria-price" name="preco" required>
-    </div>
+            <div class="form-group">
+                <label for="imobiliaria-name">Nome da Casa</label>
+                <input type="text" id="imobiliaria-name" name="nome" required>
+            </div>
 
-    <div class="form-group">
-        <label for="imobiliaria-address">Endereço</label>
-        <input type="text" id="imobiliaria-address" name="endereco">
-    </div>
+            <div class="form-group">
+                <label for="imobiliaria-price">Preço da Casa</label>
+                <input type="text" id="imobiliaria-price" name="preco" required>
+            </div>
 
-    <section>
-        <label for="imobiliaria-type">Tipo de Transação:</label>
-        <div class="radio-options">
-            <label>
-                <input type="radio" name="venda" value="0" checked>
-                Aluguel
-            </label>
-            <label>
-                <input type="radio" name="venda" value="1">
-                Venda
-            </label>
-        </div>
-    </section>
+            <div class="form-group">
+                <label for="imobiliaria-address">Endereço</label>
+                <input type="text" id="imobiliaria-address" name="endereco">
+            </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn">Cadastrar Casa</button>
-    </div>
-</form>
-        <div class="filter-group">
-            <label for="filter-select">Filtrar por:</label>
-            <select id="filter-select">
-                <option value="casa-cara">Casa mais cara</option>
-                <option value="casa-aluguel">Casa de aluguel</option>
-                <option value="casa-venda">Casa de venda</option>
-                <option value="preco-asc">Preço em ordem crescente</option>
-                <option value="preco-desc">Preço em ordem decrescente</option>
-            </select>
-        </div>
+            <section>
+                <label for="imobiliaria-type">Tipo de Transação:</label>
+                <div class="radio-options">
+                    <label>
+                        <input type="radio" name="venda" value="0" checked>
+                        Aluguel
+                    </label>
+                    <label>
+                        <input type="radio" name="venda" value="1">
+                        Venda
+                    </label>
+                </div>
+            </section>
 
+            <div class="form-group">
+                <button type="submit" class="btn" style=" margin-left:40%;">Cadastrar Casa</button>
+            </div>
+        </form>
+
+        <h1>Imóveis</h1>
         <div id="imoveis-container">
-            <!-- Aqui serão exibidos os imóveis cadastrados -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome da Casa</th>
+                        <th>Preço</th>
+                        <th>Endereço</th>
+                        <th>Tipo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($casas as $casa)
+                    <tr>
+                        <td>{{ $casa->nome }}</td>
+                        <td>{{ $casa->preco }}</td>
+                        <td>{{ $casa->endereco }}</td>
+                        <td>{{ $casa->venda ? 'Venda' : 'Aluguel' }}</td>
+                        <td>
+                            <a href="#" class="btn btn-edit">Editar</a>
+                            <a href="#" class="btn btn-delete">Excluir</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
+
         <footer>
             <div class="footer">
                 &copy; 2023 Imobiliárias. Todos os direitos reservados.

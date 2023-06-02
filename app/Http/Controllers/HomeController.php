@@ -25,7 +25,9 @@ class HomeController extends Controller
     if ($existingHouse) {
         // Imóvel já existe, faça algo, como exibir uma mensagem de erro
         $errorMessage = 'Imóvel já existe';
-        return view('pages.imobiliaria', compact('errorMessage'));    }
+        $casas = House::all(); // Recupere todas as casas do banco de dados
+        return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+    }
 
     // Criação de um novo imóvel no banco de dados usando um Model
     $house = new House();
@@ -35,7 +37,9 @@ class HomeController extends Controller
     $house->venda = $venda_aluguel;
     $house->save();
 
-    return view('pages.imobiliaria', ['nome' => $nome_casa, 'endereco' => $endereco_casa, 'preco' => $preco_casa, 'venda' => $venda_aluguel]);
+    $casas = House::all(); // Recupere todas as casas do banco de dados
+    return view('pages.imobiliaria', compact('nome_casa', 'endereco_casa', 'preco_casa', 'venda_aluguel', 'casas'));
     // Retorno da view com os dados processados
 }
+
 }
