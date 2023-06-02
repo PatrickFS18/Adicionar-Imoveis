@@ -14,8 +14,8 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('pages.imobiliaria');
 });
 
-Route::post('/casas', [App\Http\Controllers\HomeController::class, 'InsertHouses'])->name('casas.insert');
+Route::post('/home', [App\Http\Controllers\HomeController::class, 'InsertHouses'])->name('casas.insert');

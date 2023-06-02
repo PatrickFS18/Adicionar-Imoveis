@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style>
         body {
             background-color: #000;
@@ -87,7 +88,12 @@
 <body>
     <div class="container">
         <h1>Imobiliárias</h1>
-
+        @if(isset($errorMessage))
+    <h3><div class="alert alert-danger" style="margin: 10px;">
+        {{ $errorMessage }}
+    </div>
+    </h3>
+@endif
         <form id="imobiliaria-form" class="form" method="POST" action="{{ route('casas.insert') }}">
     @csrf
 
