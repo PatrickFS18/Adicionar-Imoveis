@@ -15,7 +15,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.imobiliaria');
 });
 
 Route::post('/casas', [App\Http\Controllers\HomeController::class, 'InsertHouses'])->name('casas.insert');

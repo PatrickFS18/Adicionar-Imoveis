@@ -75,6 +75,7 @@
             padding: 10px;
             background-color: #222;
             color: #fff;
+            margin-top:2em;
         }
 
         .filter-group {
@@ -87,41 +88,42 @@
     <div class="container">
         <h1>Imobiliárias</h1>
 
-        <form id="imobiliaria-form" class="form">
-            <div class="form-group">
-                <label for="imobiliaria-name">Nome da Casa</label>
-                <input type="text" id="imobiliaria-name" name="imobiliaria-name" required>
-            </div>
+        <form id="imobiliaria-form" class="form" method="POST" action="{{ route('casas.insert') }}">
+    @csrf
 
-            <div class="form-group">
-                <label for="imobiliaria-password">Preço da Casa</label>
-                <input type="password" id="imobiliaria-password" name="imobiliaria-password" required>
-            </div>
+    <div class="form-group">
+        <label for="imobiliaria-name">Nome da Casa</label>
+        <input type="text" id="imobiliaria-name" name="nome" required>
+    </div>
 
-            <div class="form-group">
-                <label for="imobiliaria-address">Endereço</label>
-                <input type="text" id="imobiliaria-address" name="imobiliaria-address">
-            </div>
+    <div class="form-group">
+        <label for="imobiliaria-price">Preço da Casa</label>
+        <input type="text" id="imobiliaria-price" name="preco" required>
+    </div>
 
-            <section>
-                <label for="imobiliaria-type">Tipo de Transação:</label>
-                <div class="radio-options">
-                    <label>
-                        <input type="radio" name="imobiliaria-type" value="aluguel" checked>
-                        Aluguel
-                    </label>
-                    <label>
-                        <input type="radio" name="imobiliaria-type" value="venda">
-                        Venda
-                    </label>
-                </div>
-            </section>
+    <div class="form-group">
+        <label for="imobiliaria-address">Endereço</label>
+        <input type="text" id="imobiliaria-address" name="endereco">
+    </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn">Cadastrar Casa</button>
-            </div>
-        </form>
+    <section>
+        <label for="imobiliaria-type">Tipo de Transação:</label>
+        <div class="radio-options">
+            <label>
+                <input type="radio" name="venda" value="0" checked>
+                Aluguel
+            </label>
+            <label>
+                <input type="radio" name="venda" value="1">
+                Venda
+            </label>
+        </div>
+    </section>
 
+    <div class="form-group">
+        <button type="submit" class="btn">Cadastrar Casa</button>
+    </div>
+</form>
         <div class="filter-group">
             <label for="filter-select">Filtrar por:</label>
             <select id="filter-select">
@@ -136,10 +138,11 @@
         <div id="imoveis-container">
             <!-- Aqui serão exibidos os imóveis cadastrados -->
         </div>
-
-        <div class="footer">
-            &copy; 2023 Imobiliárias. Todos os direitos reservados.
-        </div>
+        <footer>
+            <div class="footer">
+                &copy; 2023 Imobiliárias. Todos os direitos reservados.
+            </div>
+        </footer>
     </div>
 </body>
 
