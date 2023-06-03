@@ -128,8 +128,8 @@
             <td>{{ $casa->endereco }}</td>
             <td>{{ $casa->venda}}</td>
             <td>
-                <a href="#" class="btn btn-edit">Editar</a>
-                <a href="#" class="btn btn-delete">Excluir</a>
+                <a href="{{str(route('processForm'))}}/edit" class="btn btn-edit">Editar</a>
+                <a href="{{str(route('processForm'))}}/delete" class="btn btn-delete">Excluir</a>
             </td>
         </tr>
     @endforeach
