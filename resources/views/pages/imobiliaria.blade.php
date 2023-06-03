@@ -9,8 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style>
         body {
-            background-color: #000;
-            color: #fff;
+            background-image: linear-gradient(to bottom,  #222,#000);
+    color: #fff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -157,7 +157,7 @@
         <button type="submit" class="btn">Filtrar</button>
     </div>
 </form>
-
+<div style="margin-top:1em"></div>
 @if(isset($casaMaisCara))
     <h1>Casa mais cara:</h1>
     <div id="casa-cara">
