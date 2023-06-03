@@ -18,4 +18,4 @@ Route::get('/home', function () {
     return view('pages.imobiliaria');
 });
 
-Route::post('/home', [App\Http\Controllers\HomeController::class, 'InsertHouses'])->name('casas.insert');
+Route::post('/home', [HomeController::class, 'processForm'])->name('processForm');

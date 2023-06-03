@@ -73,7 +73,7 @@
         </h3>
         @endif
 
-        <form id="imobiliaria-form" class="form" method="POST" action="{{ route('casas.insert') }}" style="margin-bottom: 2em;">
+        <form id="imobiliaria-form" class="form" method="POST" action="{{ route('processForm') }}" style="margin-bottom: 2em;">
             @csrf
 
             <div class="form-group">
@@ -94,14 +94,10 @@
             <section>
                 <label for="imobiliaria-type">Tipo de Transação:</label>
                 <div class="radio-options">
-                    <label>
-                        <input type="radio" name="venda" value="0" checked>
-                        Aluguel
-                    </label>
-                    <label>
-                        <input type="radio" name="venda" value="1">
-                        Venda
-                    </label>
+                <select name="venda">
+    <option value="Aluguel">Aluguel</option>
+    <option value="Venda">Venda</option>
+</select>
                 </div>
             </section>
 
@@ -123,21 +119,199 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($casas as $casa)
-                    <tr>
-                        <td>{{ $casa->nome }}</td>
-                        <td>{{ $casa->preco }}</td>
-                        <td>{{ $casa->endereco }}</td>
-                        <td>{{ $casa->venda ? 'Venda' : 'Aluguel' }}</td>
-                        <td>
-                            <a href="#" class="btn btn-edit">Editar</a>
-                            <a href="#" class="btn btn-delete">Excluir</a>
-                        </td>
-                    </tr>
-                    @endforeach
+                @if(isset($casas) && count($casas) > 0)
+
+    @foreach($casas as $casa)
+        <tr>
+            <td>{{ $casa->nome }}</td>
+            <td>{{ $casa->preco }}</td>
+            <td>{{ $casa->endereco }}</td>
+            <td>{{ $casa->venda}}</td>
+            <td>
+                <a href="#" class="btn btn-edit">Editar</a>
+                <a href="#" class="btn btn-delete">Excluir</a>
+            </td>
+        </tr>
+    @endforeach
+    @else
+        <tr>
+            <td colspan="5">Nenhum imóvel disponível</td>
+        </tr>
+    @endif
+            
                 </tbody>
             </table>
         </div>
+        <form id="filtro-form" class="form" method="POST" action="{{ route('processForm') }}">
+    @csrf
+
+    <div class="filter-group">
+        <label for="filter-select">Filtrar por:</label>
+        <select id="filter-select" name="filtro">
+            <option value="casa-cara">Casa mais cara</option>
+            <option value="casa-aluguel">Casa de aluguel</option>
+            <option value="casa-venda">Casa de venda</option>
+            <option value="preco-asc">Preço em ordem crescente</option>
+            <option value="endereco-asc">Endereço em ordem crescente</option>
+        </select>
+        <button type="submit" class="btn">Filtrar</button>
+    </div>
+</form>
+
+@if(isset($casaMaisCara))
+    <h1>Casa mais cara:</h1>
+    <div id="casa-cara">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Casa</th>
+                    <th>Preço</th>
+                    <th>Endereço</th>
+                    <th>Tipo</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $casaMaisCara->nome }}</td>
+                    <td>{{ $casaMaisCara->preco }}</td>
+                    <td>{{ $casaMaisCara->endereco }}</td>
+                    <td>{{ $casaMaisCara->venda}}</td>
+                    <td>
+                         </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+@endif
+
+@if(isset($Alugueis))
+    <h1>Casas de aluguel:</h1>
+    <div id="casa-aluguel">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Casa</th>
+                    <th>Preço</th>
+                    <th>Endereço</th>
+                    <th>Tipo</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($Alugueis as $casa)
+                <tr>
+                    <td>{{ $casa->nome }}</td>
+                    <td>{{ $casa->preco }}</td>
+                    <td>{{ $casa->endereco }}</td>
+                    <td>{{ $casa->venda }}</td>
+                    <td>
+                         </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endif
+
+@if(isset($Vendas))
+    <h1>Casas de venda:</h1>
+    <div id="casa-venda">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Casa</th>
+                    <th>Preço</th>
+                    <th>Endereço</th>
+                    <th>Tipo</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($Vendas as $casa)
+                <tr>
+                    <td>{{ $casa->nome }}</td>
+                    <td>{{ $casa->preco }}</td>
+                    <td>{{ $casa->endereco }}</td>
+                    <td>{{ $casa->venda}}</td>
+                    <td>
+                         </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endif
+
+@if(isset($PrecoCrescente))
+    <h1>Preço em ordem crescente:</h1>
+    <div id="preco-asc">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Casa</th>
+                    <th>Preço</th>
+                    <th>Endereço</th>
+                    <th>Tipo</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($PrecoCrescente as $casa)
+                <tr>
+                    <td>{{ $casa->nome }}</td>
+                    <td>{{ $casa->preco }}</td>
+                    <td>{{ $casa->endereco }}</td>
+                    <td>{{ $casa->venda}}</td>
+                    <td>
+                         </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endif
+
+@if(isset($EnderecoCrescente))
+    <h1>Endereco Crescente:</h1>
+    <div id="preco-desc">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Casa</th>
+                    <th>Preço</th>
+                    <th>Endereço</th>
+                    <th>Tipo</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($EnderecoCrescente as $casa)
+                <tr>
+                    <td>{{ $casa->nome }}</td>
+                    <td>{{ $casa->preco }}</td>
+                    <td>{{ $casa->endereco }}</td>
+                    <td>{{ $casa->venda}}</td>
+                    <td>
+                         </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endif
+
+
+
+
+
+
+
+
+
+
+
+
 
         <footer>
             <div class="footer">
