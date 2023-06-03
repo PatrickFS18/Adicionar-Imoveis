@@ -146,7 +146,7 @@
     @csrf
 
     <div class="filter-group">
-        <label for="filter-select">Filtrar por:</label>
+        <label for="filter-select">Buscar por:</label>
         <select id="filter-select" name="filtro">
             <option value="casa-cara">Casa mais cara</option>
             <option value="casa-aluguel">Casa de aluguel</option>
