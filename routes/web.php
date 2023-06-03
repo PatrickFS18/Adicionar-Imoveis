@@ -19,3 +19,4 @@ Route::get('/home', function () {
 });
 
 Route::post('/home', [HomeController::class, 'processForm'])->name('processForm');
+Route::post('/search',[HomeController::class, 'search'])->name('search');
