@@ -71,36 +71,95 @@ class HomeController extends Controller
         // Retorno da view com os dados processados
     }
 
+    public function excluir(Request $request)
+    {
+        $houseId = $request->input('house_id');
+
+        // Buscar a casa no banco de dados pelo ID
+        $house = House::find($houseId);
+
+        if (!$house) {
+            // Casa não encontrada, faça algo, como exibir uma mensagem de erro
+            $errorMessage = 'Casa não encontrada';
+            $casas = House::all(); // Recupere todas as casas do banco de dados
+            return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+        }
+
+        // Excluir a casa do banco de dados
+        $house->delete();
+
+        // Recarregar todas as casas do banco de dados
+        $casas = House::all();
+
+        return view('pages.imobiliaria', [
+            'casas' => $casas
+        ]);
+    }
+
+    public function atualizar(Request $request)
+    {
+        $houseId = $request->input('house_id');
+        $nome_casa = $request->input('nome');
+        $endereco_casa = $request->input('endereco');
+        $preco_casa = $request->input('preco');
+        $venda_aluguel = $request->input('venda');
+
+        // Buscar a casa no banco de dados pelo ID
+        $house = House::find($houseId);
+
+        if (!$house) {
+            // Casa não encontrada, faça algo, como exibir uma mensagem de erro
+            $errorMessage = 'Casa não encontrada';
+            $casas = House::all(); // Recupere todas as casas do banco de dados
+            return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+        }
+
+        // Atualizar os valores da casa
+        $house->nome = $nome_casa;
+        $house->endereco = $endereco_casa;
+        $house->preco = $preco_casa;
+        $house->venda = $venda_aluguel;
+        $house->save();
+
+        // Recarregar todas as casas do banco de dados
+        $casas = House::all();
+
+        return view('pages.imobiliaria', [
+            'casas' => $casas
+        ]);
+    }
 
     public function processForm(Request $request)
     {
         if ($request->has('filtro')) {
             return $this->filtrar($request);
-        } elseif($request->input('nome')!='') {
+        } elseif ($request->has('nome')) {
             return $this->inserir($request);
+        } elseif ($request->has('excluir')) {
+            return $this->excluir($request);
+        } elseif ($request->has('atualizar')) {
+            return $this->atualizar($request);
         }
     }
-    
-    public function search(Request $request)
-{
-    $casas = House::all();
-    $search = $request->input('Search');
-    $casasPesquisadas = House::where('endereco', 'LIKE', '%' . $search . '%')->get();
 
-    if ($casasPesquisadas->isEmpty()) {
-        $mensagem = 'Nenhum imóvel encontrado';
+    public function search(Request $request)
+    {
+        $casas = House::all();
+        $search = $request->input('Search');
+        $casasPesquisadas = House::where('endereco', 'LIKE', '%' . $search . '%')->get();
+
+        if ($casasPesquisadas->isEmpty()) {
+            $mensagem = 'Nenhum imóvel encontrado';
+            return view('pages.imobiliaria', [
+                'CasasPesquisadas' => $casasPesquisadas,
+                'casas' => $casas,
+                'mensagem' => $mensagem
+            ]);
+        }
+
         return view('pages.imobiliaria', [
             'CasasPesquisadas' => $casasPesquisadas,
-            'casas' => $casas,
-            'mensagem' => $mensagem
+            'casas' => $casas
         ]);
     }
-
-    return view('pages.imobiliaria', [
-        'CasasPesquisadas' => $casasPesquisadas,
-        'casas' => $casas
-    ]);
-}
-
-    
 }
