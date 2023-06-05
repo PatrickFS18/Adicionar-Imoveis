@@ -14,9 +14,14 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/home', function () {
-    return view('pages.imobiliaria');
-});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/home', [HomeController::class, 'processForm'])->name('processForm');
-Route::post('/search',[HomeController::class, 'search'])->name('search');
+Route::post('/inserir', [HomeController::class, 'inserir'])->name('inserir');
+
+Route::post('/filtrar', [HomeController::class, 'filtrar'])->name('filtrar');
+
+Route::post('/search', [HomeController::class, 'search'])->name('search');
+
+Route::post('/editar', [HomeController::class, 'atualizar'])->name('editar');
+
+Route::post('/excluir', [HomeController::class, 'excluir'])->name('excluir');

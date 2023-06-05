@@ -5,30 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\House;
 
+use Illuminate\Support\Facades\Session;
 class HomeController extends Controller
 {
+    public function carregarTodasCasas()
+    {
+        $casas = House::all();
+        return view('pages.imobiliaria', [
+            'casas' => $casas
+        ]);
+    }
+
+    public function index()
+    {
+        return $this->carregarTodasCasas();
+    }
+
     public function filtrar(Request $request)
     {
-        $house = new House();
-        $casas = House::all();
-
         $filtro = $request->input('filtro');
         if ($filtro == 'casa-cara') {
-            $casaMaisCara = House::orderBy('preco', 'desc')->first();
-            return view('pages.imobiliaria', ['casaMaisCara' => $casaMaisCara, 'casas' => $casas]);
+            $casasFiltradas = House::orderBy('preco', 'desc')->get();
         } elseif ($filtro == 'casa-aluguel') {
-            $Alugueis = House::where('venda', 'aluguel')->get();
-            return view('pages.imobiliaria', ['Alugueis' => $Alugueis, 'casas' => $casas]);
+            $casasFiltradas = House::where('venda', 'aluguel')->get();
         } elseif ($filtro == 'casa-venda') {
-            $Vendas = House::where('venda', 'venda')->get();
-            return view('pages.imobiliaria', ['Vendas' => $Vendas, 'casas' => $casas]);
+            $casasFiltradas = House::where('venda', 'venda')->get();
         } elseif ($filtro == 'preco-asc') {
-            $PrecoCresc = House::orderBy('preco', 'asc')->get();
-            return view('pages.imobiliaria', ['PrecoCrescente' => $PrecoCresc, 'casas' => $casas]);
+            $casasFiltradas = House::orderBy('preco', 'asc')->get();
         } elseif ($filtro == 'endereco-asc') {
-            $EnderecoCresc = House::orderBy('endereco', 'asc')->get();
-            return view('pages.imobiliaria', ['EnderecoCrescente' => $EnderecoCresc, 'casas' => $casas]);
+            $casasFiltradas = House::orderBy('endereco', 'asc')->get();
         }
+
+        $casas = House::all();
+        return view('pages.imobiliaria', [
+            'casas' => $casas,
+            'casasFiltradas' => $casasFiltradas
+        ]);
     }
 
     public function inserir(Request $request)
@@ -49,7 +61,10 @@ class HomeController extends Controller
             // Imóvel já existe, faça algo, como exibir uma mensagem de erro
             $errorMessage = 'Imóvel já existe';
             $casas = House::all(); // Recupere todas as casas do banco de dados
-            return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+            return view('pages.imobiliaria', [
+                'casas' => $casas,
+                'errorMessage' => $errorMessage
+            ]);
         }
 
         // Criação de um novo imóvel no banco de dados usando um Model
@@ -59,41 +74,27 @@ class HomeController extends Controller
         $house->preco = $preco_casa;
         $house->venda = $venda_aluguel;
         $house->save();
-        $casas = House::all();
-        // Recupere todas as casas do banco de dados
-        return view('pages.imobiliaria', [
-            'nome' => $nome_casa,
-            'endereco' => $endereco_casa,
-            'preco' => $preco_casa,
-            'venda' => $venda_aluguel,
-            'casas' => $casas
-        ]);
-        // Retorno da view com os dados processados
+
+        // Redirecionar para a rota raiz ("/")
+        return redirect('/home');
     }
 
     public function excluir(Request $request)
     {
-        $houseId = $request->input('house_id');
+        $id = $request->input('id-excluir');
+        $house = House::find($id);
 
-        // Buscar a casa no banco de dados pelo ID
-        $house = House::find($houseId);
+        if ($house) {
+            $house->delete();
 
-        if (!$house) {
-            // Casa não encontrada, faça algo, como exibir uma mensagem de erro
-            $errorMessage = 'Casa não encontrada';
-            $casas = House::all(); // Recupere todas as casas do banco de dados
-            return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+            $successMessage = 'Casa excluída com sucesso.';
+            session()->flash('successMessage', $successMessage);        } else {
+            $errorMessage = 'Casa não encontrada.';
+            session()->flash('errorMessage', $errorMessage);
         }
 
-        // Excluir a casa do banco de dados
-        $house->delete();
-
-        // Recarregar todas as casas do banco de dados
         $casas = House::all();
-
-        return view('pages.imobiliaria', [
-            'casas' => $casas
-        ]);
+        return redirect('/home')->with(compact('casas'));
     }
 
     public function atualizar(Request $request)
@@ -111,7 +112,10 @@ class HomeController extends Controller
             // Casa não encontrada, faça algo, como exibir uma mensagem de erro
             $errorMessage = 'Casa não encontrada';
             $casas = House::all(); // Recupere todas as casas do banco de dados
-            return view('pages.imobiliaria', compact('errorMessage', 'casas'));
+            return redirect('/home')->with([
+                'casas' => $casas,
+                'errorMessage' => $errorMessage
+            ]);
         }
 
         // Atualizar os valores da casa
@@ -121,45 +125,29 @@ class HomeController extends Controller
         $house->venda = $venda_aluguel;
         $house->save();
 
-        // Recarregar todas as casas do banco de dados
-        $casas = House::all();
-
-        return view('pages.imobiliaria', [
-            'casas' => $casas
-        ]);
-    }
-
-    public function processForm(Request $request)
-    {
-        if ($request->has('filtro')) {
-            return $this->filtrar($request);
-        } elseif ($request->has('nome')) {
-            return $this->inserir($request);
-        } elseif ($request->has('excluir')) {
-            return $this->excluir($request);
-        } elseif ($request->has('atualizar')) {
-            return $this->atualizar($request);
-        }
+        // Redirecionar para a rota raiz ("/")
+        return redirect('/home');
     }
 
     public function search(Request $request)
     {
-        $casas = House::all();
         $search = $request->input('Search');
+
+        $casas = House::all();
         $casasPesquisadas = House::where('endereco', 'LIKE', '%' . $search . '%')->get();
 
         if ($casasPesquisadas->isEmpty()) {
             $mensagem = 'Nenhum imóvel encontrado';
             return view('pages.imobiliaria', [
-                'CasasPesquisadas' => $casasPesquisadas,
                 'casas' => $casas,
+                'casasPesquisadas' => $casasPesquisadas,
                 'mensagem' => $mensagem
             ]);
         }
 
         return view('pages.imobiliaria', [
-            'CasasPesquisadas' => $casasPesquisadas,
-            'casas' => $casas
+            'casas' => $casas,
+            'casasPesquisadas' => $casasPesquisadas
         ]);
     }
 }
