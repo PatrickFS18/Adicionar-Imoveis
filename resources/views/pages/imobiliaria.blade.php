@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <style>
     body {
@@ -15,7 +16,9 @@
       margin: 0;
       padding: 0;
     }
-
+    label{
+      color:black;
+    }
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -96,7 +99,9 @@
     .form-container button:hover {
         background-color: #45a049;
     }
+    
   </style>
+
 </head>
 
 <body>
@@ -109,7 +114,7 @@
       </div>
     </h3>
     @endif
-
+    <div class="form-container">
     <form id="imobiliaria-form" class="form" method="POST" action="{{ route('inserir') }}" style="margin-bottom: 2em;">
       @csrf
 
@@ -142,8 +147,8 @@
         <input type="submit" class="btn" style="margin-left: 40%;" value="Inserir">
       </div>
     </form>
-
-    <h1>Imóveis</h1>
+    </div>
+    <h1 style="margin-top:3em">Imóveis</h1>
     <div id="imoveis-container">
       <table class="table">
         <thead>
@@ -168,17 +173,18 @@
             <td>{{ $casa->venda }}</td>
 
             <td>
-
+             
               <form id="editar-form-{{ $casa->ID }}" class="form" method="POST" action="{{ route('editar')}}">
                 @csrf
-                <button type="submit" class="btn btn-edit" name="editar" value="{{ $casa->ID }}">Editar</button>
+                <button type="submit" class="btn btn-success" name="editar" value="{{ $casa->ID }}" >Editar</button>
               </form>
+              
               <form action="{{ route('excluir', $casa->ID) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger" type="submit">Excluir</button>
               </form>
-
+              
 
 
 
