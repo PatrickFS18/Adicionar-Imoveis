@@ -3,6 +3,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,4 +26,4 @@ Route::post('/search', [HomeController::class, 'search'])->name('search');
 
 Route::post('/editar', [HomeController::class, 'atualizar'])->name('editar');
 
-Route::post('/excluir', [HomeController::class, 'excluir'])->name('excluir');
+Route::delete('/excluir/{casa}', [HomeController::class, 'excluir'])->name('excluir');

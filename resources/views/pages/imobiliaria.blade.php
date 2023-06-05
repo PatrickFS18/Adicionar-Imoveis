@@ -58,6 +58,44 @@
       color: #fff;
       margin-top: 2em;
     }
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-container label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .form-container select,
+    .form-container input[type="text"],
+    .form-container input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .form-container button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .form-container button:hover {
+        background-color: #45a049;
+    }
   </style>
 </head>
 
@@ -135,11 +173,11 @@
                 @csrf
                 <button type="submit" class="btn btn-edit" name="editar" value="{{ $casa->ID }}">Editar</button>
               </form>
-              <form id="delete-form-{{ $casa->ID }}" class="form" method="POST" action="{{ route('excluir') }}">
-    @csrf
-    <input type="hidden" name="id-excluir" value="{{ $casa->ID }}">
-    <input type="submit" class="btn btn-edit" name="excluir" value="Excluir">
-</form>
+              <form action="{{ route('excluir', $casa->ID) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">Excluir</button>
+              </form>
 
 
 
@@ -347,9 +385,45 @@
     @if(isset($mensagem))
     <p>{{ $mensagem }}</p>
     @endif
+    
+    <h2 style="margin-left:9em;margin-top:2em">Editar Imóvel</h2>
+    <div class="form-container" style="margin-top:1em">
+    <form action="{{ route('editar') }}" method="POST">
+        @csrf
+
+        <label for="editar">Selecione uma casa:</label>
+        <select name="editar" id="editar">
+            @foreach ($casas as $casa)
+                <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
+            @endforeach
+        </select>
+
+        <label for="nome" style="color: black;">Nome:</label>
+        <input type="text" name="nome" id="nome">
+
+        <label for="endereco" style="color: black;">Endereço:</label>
+        <input type="text" name="endereco" id="endereco">
+
+        <label for="preco" style="color: black;">Preço:</label>
+        <input type="number" name="preco" id="preco">
+
+        <label for="imobiliaria-type">Tipo de Transação:</label>
+        <div class="radio-options">
+          <select name="venda">
+            <option value="Aluguel">Aluguel</option>
+            <option value="Venda">Venda</option>
+          </select>
+        </div>
+
+        <button type="submit">Atualizar</button>
+    </form>
+</div>
+
+
     <div class="footer">
       &copy; 2023 Imobiliárias. Todos os direitos reservados. </div>
   </div>
+
 </body>
 
 </html>

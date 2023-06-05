@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Models\House;
 
 use Illuminate\Support\Facades\Session;
+
 class HomeController extends Controller
 {
     public function carregarTodasCasas()
@@ -79,27 +80,28 @@ class HomeController extends Controller
         return redirect('/home');
     }
 
-    public function excluir(Request $request)
+    public function excluir(Request $casa)
     {
-        $id = $request->input('id-excluir');
-        $house = House::find($id);
 
-        if ($house) {
-            $house->delete();
+        if ($casa->delete()) {
+
 
             $successMessage = 'Casa excluída com sucesso.';
-            session()->flash('successMessage', $successMessage);        } else {
+            session()->flash('successMessage', $successMessage);
+        } else {
             $errorMessage = 'Casa não encontrada.';
             session()->flash('errorMessage', $errorMessage);
         }
 
         $casas = House::all();
-        return redirect('/home')->with(compact('casas'));
+        return redirect('/home')->with([
+            'casas' => $casas
+        ]);
     }
 
     public function atualizar(Request $request)
     {
-        $houseId = $request->input('house_id');
+        $houseId = $request->input('editar');
         $nome_casa = $request->input('nome');
         $endereco_casa = $request->input('endereco');
         $preco_casa = $request->input('preco');
