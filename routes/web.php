@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -26,4 +25,4 @@ Route::post('/search', [HomeController::class, 'search'])->name('search');
 
 Route::post('/editar', [HomeController::class, 'atualizar'])->name('editar');
 
-Route::delete('/excluir/{casa}', [HomeController::class, 'excluir'])->name('excluir');
+Route::delete('/excluir', [HomeController::class, 'excluir'])->name('excluir');
