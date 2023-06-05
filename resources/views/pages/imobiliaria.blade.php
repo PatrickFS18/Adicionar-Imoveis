@@ -174,10 +174,7 @@
 
             <td>
              
-              <form id="editar-form-{{ $casa->ID }}" class="form" method="POST" action="{{ route('editar')}}">
-                @csrf
-                <button type="submit" class="btn btn-success" name="editar" value="{{ $casa->ID }}" >Editar</button>
-              </form>
+              
               
               <form action="{{ route('excluir', $casa->ID) }}" method="POST">
                 @csrf
