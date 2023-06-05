@@ -139,23 +139,22 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('Search');
-
         $casas = House::all();
+        $search = $request->input('Search');
         $casasPesquisadas = House::where('endereco', 'LIKE', '%' . $search . '%')->get();
 
         if ($casasPesquisadas->isEmpty()) {
             $mensagem = 'Nenhum imóvel encontrado';
             return view('pages.imobiliaria', [
+                'CasasPesquisadas' => $casasPesquisadas,
                 'casas' => $casas,
-                'casasPesquisadas' => $casasPesquisadas,
                 'mensagem' => $mensagem
             ]);
         }
 
         return view('pages.imobiliaria', [
-            'casas' => $casas,
-            'casasPesquisadas' => $casasPesquisadas
+            'CasasPesquisadas' => $casasPesquisadas,
+            'casas' => $casas
         ]);
     }
 }
