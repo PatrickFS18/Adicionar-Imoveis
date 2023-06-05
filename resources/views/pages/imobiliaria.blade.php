@@ -200,14 +200,52 @@
     </div>
 @endif
 
+
+
 @if (Session::has('errorMessage'))
     <div class="alert alert-danger">
         {{ Session::get('errorMessage') }}
     </div>
 @endif
       </table>
+
+      <h2 style="margin-left:9em;margin-top:2em">Editar Imóvel</h2>
+    <div class="form-container" style="margin-top:1em">
+    <form action="{{ route('editar') }}" method="POST">
+        @csrf
+
+        <label for="editar">Selecione uma casa:</label>
+        <select name="editar" id="editar">
+            @foreach ($casas as $casa)
+                <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
+            @endforeach
+        </select>
+
+        <label for="nome" style="color: black;">Nome:</label>
+        <input type="text" name="nome" id="nome">
+
+        <label for="endereco" style="color: black;">Endereço:</label>
+        <input type="text" name="endereco" id="endereco">
+
+        <label for="preco" style="color: black;">Preço:</label>
+        <input type="number" name="preco" id="preco">
+
+        <label for="imobiliaria-type">Tipo de Transação:</label>
+        <div class="radio-options">
+          <select name="venda">
+            <option value="Aluguel">Aluguel</option>
+            <option value="Venda">Venda</option>
+          </select>
+        </div>
+
+        <button type="submit">Atualizar</button>
+    </form>
+</div>
+
+
+
     </div>
-    <form id="filtro-form" class="form-container" method="POST" action="{{ route('filtrar') }}">
+    <form id="filtro-form" class="form-container" method="POST" action="{{ route('filtrar') }}" style="margin-top:4em;margin-bottom:4em">
       @csrf
 
       <div class="filter-group">
@@ -396,38 +434,7 @@
     <p>{{ $mensagem }}</p>
     @endif
     
-    <h2 style="margin-left:9em;margin-top:2em">Editar Imóvel</h2>
-    <div class="form-container" style="margin-top:1em">
-    <form action="{{ route('editar') }}" method="POST">
-        @csrf
-
-        <label for="editar">Selecione uma casa:</label>
-        <select name="editar" id="editar">
-            @foreach ($casas as $casa)
-                <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
-            @endforeach
-        </select>
-
-        <label for="nome" style="color: black;">Nome:</label>
-        <input type="text" name="nome" id="nome">
-
-        <label for="endereco" style="color: black;">Endereço:</label>
-        <input type="text" name="endereco" id="endereco">
-
-        <label for="preco" style="color: black;">Preço:</label>
-        <input type="number" name="preco" id="preco">
-
-        <label for="imobiliaria-type">Tipo de Transação:</label>
-        <div class="radio-options">
-          <select name="venda">
-            <option value="Aluguel">Aluguel</option>
-            <option value="Venda">Venda</option>
-          </select>
-        </div>
-
-        <button type="submit">Atualizar</button>
-    </form>
-</div>
+    
 
 
     <div class="footer">
