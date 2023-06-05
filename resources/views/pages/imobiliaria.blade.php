@@ -238,9 +238,10 @@
 
 
 
-              <form action="{{ route('excluir', $casa->ID) }}" method="POST">
+              <form action="{{ route('excluir')}} " method="POST">
                 @csrf
                 @method('DELETE')
+                <input type="hidden" name="id" value="{{$casa->ID}}">
                 <button class="btn btn-danger" type="submit" style="margin-top:5px">Excluir</button>
               </form>
 
@@ -279,7 +280,7 @@
           <label for="editar">Selecione uma casa:</label>
           <select name="editar" id="editar">
             @foreach ($casas as $casa)
-            <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
+            <option name="editar" value="{{ $casa->ID }}">{{ $casa->nome }}</option>
             @endforeach
           </select>
 
