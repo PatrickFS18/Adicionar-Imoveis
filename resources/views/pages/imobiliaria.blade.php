@@ -16,9 +16,11 @@
       margin: 0;
       padding: 0;
     }
-    label{
-      color:black;
+
+    label {
+      color: black;
     }
+
     .container {
       max-width: 800px;
       margin: 0 auto;
@@ -61,52 +63,112 @@
       color: #fff;
       margin-top: 2em;
     }
+
     .form-container {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     .form-container label {
-        display: block;
-        margin-bottom: 10px;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .form-container select,
     .form-container input[type="text"],
     .form-container input[type="number"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     .form-container button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
     }
 
     .form-container button:hover {
-        background-color: #45a049;
+      background-color: #45a049;
     }
-    
+
+    .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: -250px;
+            z-index: 1000;
+            width: 250px;
+            padding: 20px;
+            background-color: #343a40;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .content {
+            margin-left: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .content.active {
+            margin-left: 0;
+        }
+
   </style>
 
 </head>
 
 <body>
+<div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0">
+                <button class="btn btn-dark" id="sidebarToggle">-></button>
+                <div class="sidebar">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                            <span class="fs-5 d-none d-sm-inline">Menu</span>
+                        </a>
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li class="nav-item">
+                                <a href="#inserir-imovel" class="nav-link align-middle px-0">
+                                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Inserir Imóvel</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#buscar-por" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-search"></i> <span class="ms-1 d-none d-sm-inline">Buscar Por</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#pesquisar" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-search"></i> <span class="ms-1 d-none d-sm-inline">Pesquisar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#editar" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-pencil"></i> <span class="ms-1 d-none d-sm-inline">Editar</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
   <div class="container">
-    <h1>Adicionar Imóvel</h1>
+    <h1 id="inserir-imovel">Adicionar Imóvel</h1>
     @if(isset($errorMessage))
     <h3>
       <div class="alert alert-danger" style="margin: 10px;">
@@ -115,38 +177,38 @@
     </h3>
     @endif
     <div class="form-container">
-    <form id="imobiliaria-form" class="form" method="POST" action="{{ route('inserir') }}" style="margin-bottom: 2em;">
-      @csrf
+      <form id="imobiliaria-form" class="form" method="POST" action="{{ route('inserir') }}" style="margin-bottom: 2em;">
+        @csrf
 
-      <div class="form-group">
-        <label for="imobiliaria-name">Nome da Casa</label>
-        <input type="text" id="imobiliaria-name" name="nome" required>
-      </div>
-
-      <div class="form-group">
-        <label for="imobiliaria-price">Preço da Casa</label>
-        <input type="text" id="imobiliaria-price" name="preco" required>
-      </div>
-
-      <div class="form-group">
-        <label for="imobiliaria-address">Endereço</label>
-        <input type="text" id="imobiliaria-address" name="endereco">
-      </div>
-
-      <section>
-        <label for="imobiliaria-type">Tipo de Transação:</label>
-        <div class="radio-options">
-          <select name="venda">
-            <option value="Aluguel">Aluguel</option>
-            <option value="Venda">Venda</option>
-          </select>
+        <div class="form-group">
+          <label for="imobiliaria-name">Nome da Casa</label>
+          <input type="text" id="imobiliaria-name" name="nome" required>
         </div>
-      </section>
 
-      <div class="form-group">
-        <input type="submit" class="btn" style="margin-left: 40%;" value="Inserir">
-      </div>
-    </form>
+        <div class="form-group">
+          <label for="imobiliaria-price">Preço da Casa</label>
+          <input type="text" id="imobiliaria-price" name="preco" required>
+        </div>
+
+        <div class="form-group">
+          <label for="imobiliaria-address">Endereço</label>
+          <input type="text" id="imobiliaria-address" name="endereco">
+        </div>
+
+        <section>
+          <label for="imobiliaria-type">Tipo de Transação:</label>
+          <div class="radio-options">
+            <select name="venda">
+              <option value="Aluguel">Aluguel</option>
+              <option value="Venda">Venda</option>
+            </select>
+          </div>
+        </section>
+
+        <div class="form-group">
+          <input type="submit" class="btn" style="margin-left: 40%;" value="Inserir">
+        </div>
+      </form>
     </div>
     <h1 style="margin-top:3em">Imóveis</h1>
     <div id="imoveis-container">
@@ -173,15 +235,15 @@
             <td>{{ $casa->venda }}</td>
 
             <td>
-             
-              
-              
+
+
+
               <form action="{{ route('excluir', $casa->ID) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-danger" type="submit" style="margin-top:5px">Excluir</button>
               </form>
-              
+
 
 
 
@@ -195,52 +257,52 @@
           @endif
         </tbody>
         @if (Session::has('successMessage'))
-    <div class="alert alert-success">
-        {{ Session::get('successMessage') }}
-    </div>
-@endif
+        <div class="alert alert-success">
+          {{ Session::get('successMessage') }}
+        </div>
+        @endif
 
 
 
-@if (Session::has('errorMessage'))
-    <div class="alert alert-danger">
-        {{ Session::get('errorMessage') }}
-    </div>
-@endif
+        @if (Session::has('errorMessage'))
+        <div class="alert alert-danger">
+          {{ Session::get('errorMessage') }}
+        </div>
+        @endif
       </table>
 
-      <h2 style="margin-left:9em;margin-top:2em">Editar Imóvel</h2>
-    <div class="form-container" style="margin-top:1em">
-    <form action="{{ route('editar') }}" method="POST">
-        @csrf
+      <h2 style="margin-left:9em;margin-top:2em" id="editar">Editar Imóvel</h2>
+      <div class="form-container" style="margin-top:1em">
+        <form action="{{ route('editar') }}" method="POST">
+          @csrf
 
-        <label for="editar">Selecione uma casa:</label>
-        <select name="editar" id="editar">
+          <label for="editar">Selecione uma casa:</label>
+          <select name="editar" id="editar">
             @foreach ($casas as $casa)
-                <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
+            <option value="{{ $casa->ID }}">{{ $casa->nome }}</option>
             @endforeach
-        </select>
-
-        <label for="nome" style="color: black;">Nome:</label>
-        <input type="text" name="nome" id="nome">
-
-        <label for="endereco" style="color: black;">Endereço:</label>
-        <input type="text" name="endereco" id="endereco">
-
-        <label for="preco" style="color: black;">Preço:</label>
-        <input type="number" name="preco" id="preco">
-
-        <label for="imobiliaria-type">Tipo de Transação:</label>
-        <div class="radio-options">
-          <select name="venda">
-            <option value="Aluguel">Aluguel</option>
-            <option value="Venda">Venda</option>
           </select>
-        </div>
 
-        <button type="submit">Atualizar</button>
-    </form>
-</div>
+          <label for="nome" style="color: black;">Nome:</label>
+          <input type="text" name="nome" id="nome">
+
+          <label for="endereco" style="color: black;">Endereço:</label>
+          <input type="text" name="endereco" id="endereco">
+
+          <label for="preco" style="color: black;">Preço:</label>
+          <input type="number" name="preco" id="preco">
+
+          <label for="imobiliaria-type">Tipo de Transação:</label>
+          <div class="radio-options">
+            <select name="venda">
+              <option value="Aluguel">Aluguel</option>
+              <option value="Venda">Venda</option>
+            </select>
+          </div>
+
+          <button type="submit">Atualizar</button>
+        </form>
+      </div>
 
 
 
@@ -249,7 +311,7 @@
       @csrf
 
       <div class="filter-group">
-        <label for="filter-select">Buscar por:</label>
+        <label for="filter-select" id="buscar-por">Buscar por:</label>
         <select id="filter-select" name="filtro">
           <option value="casa-cara">Casa mais cara</option>
           <option value="casa-aluguel">Casa de aluguel</option>
@@ -402,7 +464,7 @@
         <br>
         <br>
         &nbsp;
-        <input type="submit" class="btn" value="Pesquisar" style="margin-left:30%">
+        <input type="submit" class="btn" id="pesquisar" value="Pesquisar" style="margin-left:30%">
       </div>
     </form>
     @if(isset($CasasPesquisadas))
@@ -433,14 +495,24 @@
     @if(isset($mensagem))
     <p>{{ $mensagem }}</p>
     @endif
-    
-    
+
+
 
 
     <div class="footer">
       &copy; 2023 Imobiliárias. Todos os direitos reservados. </div>
   </div>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        const content = document.querySelector('.content');
 
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            content.classList.toggle('active');
+        });
+    </script>
 </body>
 
 </html>
