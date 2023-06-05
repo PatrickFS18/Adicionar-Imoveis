@@ -68,7 +68,7 @@ class HomeController extends Controller
             $errorMessage = 'Imóvel já existe';
             $casas = House::all(); // Recupere todas as casas do banco de dados
 
-            return redirect('/home')->with([
+            return redirect('/')->with([
                 'casas' => $casas,
                 'errorMessage' => $errorMessage
             ]);
@@ -83,7 +83,7 @@ class HomeController extends Controller
         $house->save();
 
         // Redirecionar para a rota raiz ("/")
-        return redirect('/home');
+        return redirect('/');
     }
 
     public function excluir(Request $casa)
@@ -100,7 +100,7 @@ class HomeController extends Controller
         }
 
         $casas = House::all();
-        return redirect('/home')->with([
+        return redirect('/')->with([
             'casas' => $casas
         ]);
     }
@@ -120,7 +120,7 @@ class HomeController extends Controller
             // Casa não encontrada, faça algo, como exibir uma mensagem de erro
             $errorMessage = 'Casa não encontrada';
             $casas = House::all(); // Recupere todas as casas do banco de dados
-            return redirect('/home')->with([
+            return redirect('/')->with([
                 'casas' => $casas,
                 'errorMessage' => $errorMessage
             ]);
@@ -134,7 +134,7 @@ class HomeController extends Controller
         $house->save();
 
         // Redirecionar para a rota raiz ("/")
-        return redirect('/home');
+        return redirect('/');
     }
 
     public function search(Request $request)

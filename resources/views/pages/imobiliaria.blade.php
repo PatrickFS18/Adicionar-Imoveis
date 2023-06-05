@@ -210,7 +210,7 @@
 @endif
       </table>
     </div>
-    <form id="filtro-form" class="form" method="POST" action="{{ route('filtrar') }}">
+    <form id="filtro-form" class="form-container" method="POST" action="{{ route('filtrar') }}">
       @csrf
 
       <div class="filter-group">
@@ -222,7 +222,11 @@
           <option value="preco-asc">Preço em ordem crescente</option>
           <option value="endereco-asc">Endereço em ordem crescente</option>
         </select>
-        <button type="submit" class="btn">Filtrar</button>
+        <br>
+        <br>
+
+        &nbsp;
+        <button type="submit" class="btn" style="margin-left:30%">Filtrar</button>
       </div>
     </form>
     <div style="margin-top:1em"></div>
@@ -357,10 +361,13 @@
     <form id="filtro-form" class="form" method="POST" action="{{ route('search') }}">
       @csrf
 
-      <div class="filter-group">
+      <div class="form-container">
         <label for="filter-input">Procurar:</label>
         <input type="text" id="filter-input" name="Search" placeholder="Digite um trecho do endereço">
-        <input type="submit" class="btn" value="Pesquisar">
+        <br>
+        <br>
+        &nbsp;
+        <input type="submit" class="btn" value="Pesquisar" style="margin-left:30%">
       </div>
     </form>
     @if(isset($CasasPesquisadas))

@@ -16,7 +16,7 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/inserir', [HomeController::class, 'inserir'])->name('inserir');
 
