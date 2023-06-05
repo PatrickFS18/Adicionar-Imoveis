@@ -182,7 +182,7 @@
               <form action="{{ route('excluir', $casa->ID) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button class="btn btn-danger" type="submit">Excluir</button>
+                <button class="btn btn-danger" type="submit" style="margin-top:5px">Excluir</button>
               </form>
               
 

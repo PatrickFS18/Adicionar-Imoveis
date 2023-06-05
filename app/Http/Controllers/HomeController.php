@@ -24,26 +24,31 @@ class HomeController extends Controller
 
     public function filtrar(Request $request)
     {
-        $filtro = $request->input('filtro');
-        if ($filtro == 'casa-cara') {
-            $casasFiltradas = House::orderBy('preco', 'desc')->get();
-        } elseif ($filtro == 'casa-aluguel') {
-            $casasFiltradas = House::where('venda', 'aluguel')->get();
-        } elseif ($filtro == 'casa-venda') {
-            $casasFiltradas = House::where('venda', 'venda')->get();
-        } elseif ($filtro == 'preco-asc') {
-            $casasFiltradas = House::orderBy('preco', 'asc')->get();
-        } elseif ($filtro == 'endereco-asc') {
-            $casasFiltradas = House::orderBy('endereco', 'asc')->get();
+        if ($request->has('filtro')) {
+            //Filtrar
+            $house = new House();
+            $casas = House::all();
+
+
+            $filtro = $request->input('filtro');
+            if ($filtro == 'casa-cara') {
+                $casaMaisCara = House::orderBy('preco', 'desc')->first();
+                return view('pages.imobiliaria', ['casaMaisCara' => $casaMaisCara, 'casas' => $casas]);
+            } elseif ($filtro == 'casa-aluguel') {
+                $Alugueis = House::where('venda', 'aluguel')->get();
+                return view('pages.imobiliaria', ['Alugueis' => $Alugueis, 'casas' => $casas]);
+            } elseif ($filtro == 'casa-venda') {
+                $Vendas = House::where('venda', 'venda')->get();
+                return view('pages.imobiliaria', ['Vendas' => $Vendas, 'casas' => $casas]);
+            } elseif ($filtro == 'preco-asc') {
+                $PrecoCresc = House::orderBy('preco', 'asc')->get();
+                return view('pages.imobiliaria', ['PrecoCrescente' => $PrecoCresc, 'casas' => $casas]);
+            } elseif ($filtro == 'endereco-asc') {
+                $EnderecoCresc = House::orderBy('endereco', 'asc')->get();
+                return view('pages.imobiliaria', ['EnderecoCrescente' => $EnderecoCresc, 'casas' => $casas]);
+            }
         }
-
-        $casas = House::all();
-        return view('pages.imobiliaria', [
-            'casas' => $casas,
-            'casasFiltradas' => $casasFiltradas
-        ]);
     }
-
     public function inserir(Request $request)
     {
         $nome_casa = $request->input('nome');
@@ -62,7 +67,8 @@ class HomeController extends Controller
             // Imóvel já existe, faça algo, como exibir uma mensagem de erro
             $errorMessage = 'Imóvel já existe';
             $casas = House::all(); // Recupere todas as casas do banco de dados
-            return view('pages.imobiliaria', [
+
+            return redirect('/home')->with([
                 'casas' => $casas,
                 'errorMessage' => $errorMessage
             ]);
