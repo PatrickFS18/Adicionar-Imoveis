@@ -86,11 +86,12 @@ class HomeController extends Controller
         return redirect('/');
     }
 
-    public function excluir(Request $casa)
+    public function excluir(Request $id)
     {
 
-        if ($casa->delete()) {
-
+        $Imovel = House::where("id",$id["id"]);
+        $Result=$Imovel->delete();
+        if ($Result) {
 
             $successMessage = 'Casa excluída com sucesso.';
             session()->flash('successMessage', $successMessage);
@@ -107,14 +108,13 @@ class HomeController extends Controller
 
     public function atualizar(Request $request)
     {
-        $houseId = $request->input('editar');
+        $house = House::where("id", $request->input('editar'))->first();
         $nome_casa = $request->input('nome');
         $endereco_casa = $request->input('endereco');
         $preco_casa = $request->input('preco');
         $venda_aluguel = $request->input('venda');
 
         // Buscar a casa no banco de dados pelo ID
-        $house = House::find($houseId);
 
         if (!$house) {
             // Casa não encontrada, faça algo, como exibir uma mensagem de erro
@@ -131,10 +131,15 @@ class HomeController extends Controller
         $house->endereco = $endereco_casa;
         $house->preco = $preco_casa;
         $house->venda = $venda_aluguel;
-        $house->save();
+        $soma=['nome'=>$house->nome,'endereco'=> $house->endereco,'preco'=> $house->preco,'venda'=> $house->venda];
+        $house = House::where("id", $request->input('editar'))->update($soma);
+        $sucessMessage = 'Casa editada com sucesso!';
+
 
         // Redirecionar para a rota raiz ("/")
-        return redirect('/');
+        return redirect('/')->with([
+            'sucessMessage' => $sucessMessage
+        ]);
     }
 
     public function search(Request $request)
